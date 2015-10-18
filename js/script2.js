@@ -4,48 +4,6 @@ shaderSources = {
     fShaderSource : null
 };
 
-function loadShader(gl, type, source) {
-    var shader = gl.createShader(type);
-    if ( !shader ) {
-        console.log('невозможно создать шейдер');
-        return null;
-    }
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-    var compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-    if ( !compiled ) {
-        var error = gl.getShaderInfoLog(shader);
-        console.log('Ошибки при компиляции шейдера:' + error);
-        gl.deleteShader(shader);
-        return null;
-    }
-    return shader;
-}
-
-function createProgram(gl, vShaderSource, fShaderSource) { 
-    var vertexShader = loadShader(gl, gl.VERTEX_SHADER, vShaderSource);
-    var fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fShaderSource);
-    if ( !vertexShader || !fragmentShader) {
-        return null;
-    }
-    var program = gl.createProgram();
-    if ( !program ) {
-        return null;
-    }
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
-    gl.linkProgram(program);
-    var linkStatus = gl.getProgramParameter(program, gl.LINK_STATUS);
-    if ( !linkStatus ) {
-        var error = gl.getProgramInfoLog(program);
-        console.log('Ошибки при сборке программы' + error);
-        gl.deleteProgram(program);
-        gl.deleteShader(vertexShader);
-        gl.deleteShader(fragmentShader);
-        return null;
-    }
-    return program;
-}
 
 function init () {
     getSource("shader.vert",shaderSources,'vShaderSource');
@@ -61,20 +19,24 @@ function main() {
     }
     gl.clearColor(0.0,0.0,1.0,1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    var program = createProgram(gl, shaderSources.vShaderSource, shaderSources.fShaderSource);
-    var a_Position = gl.getAttribLocation(program, 'a_Position');
+    var program = new GLSLprogram(gl);
+    // var program = createProgram(gl, shaderSources.vShaderSource, shaderSources.fShaderSource);
+    program.compileShader(shaderSources.vShaderSource,gl.VERTEX_SHADER);
+    program.compileShader(shaderSources.fShaderSource,gl.FRAGMENT_SHADER);
+    program.link();
+    var a_Position = gl.getAttribLocation(program.handle, 'a_Position');
 
     if ( a_Position < 0 ) {
         console.log('невозможно получить a_Position');
         return null;
     }
-    var u_FragColor = gl.getUniformLocation(program, 'u_FragColor');
+    var u_FragColor = gl.getUniformLocation(program.handle, 'u_FragColor');
     if (!u_FragColor) {
         console.log('невозможно получить u_FragColor');
         return;
     }
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.useProgram(program);
+    gl.useProgram(program.handle);
     gl.uniform4f(u_FragColor,Math.random(),Math.random(),Math.random(),1.0);
     
     var vertexBuffer = gl.createBuffer();
