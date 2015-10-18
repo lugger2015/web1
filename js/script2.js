@@ -22,7 +22,7 @@ function loadShader(gl, type, source) {
     return shader;
 }
 
-function createProgram(gl, vShaderSource, fShaderSource) {
+function createProgram(gl, vShaderSource, fShaderSource) { 
     var vertexShader = loadShader(gl, gl.VERTEX_SHADER, vShaderSource);
     var fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fShaderSource);
     if ( !vertexShader || !fragmentShader) {
