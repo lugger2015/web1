@@ -19,8 +19,10 @@ function main() {
     }
     gl.clearColor(0.0,0.0,1.0,1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    var program = new GLSLprogram(gl);
+    //var program = new GLSLprogram(gl);
     // var program = createProgram(gl, shaderSources.vShaderSource, shaderSources.fShaderSource);
+    var program = Object.create(GLSLProgram2);
+    program.init(gl);
     program.compileShader(shaderSources.vShaderSource,gl.VERTEX_SHADER);
     program.compileShader(shaderSources.fShaderSource,gl.FRAGMENT_SHADER);
     program.link();
