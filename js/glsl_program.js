@@ -1,4 +1,4 @@
-var GLSLprogram = function (gl) {
+var GLSLprogram_ = function (gl) {
     this.gl = gl;
     this.linked = false;
     this.uniformLocation = {};
@@ -8,13 +8,13 @@ var GLSLprogram = function (gl) {
     }
 };
 
-GLSLprogram.prototype.getUniformLocation = function (uniformName) {
+GLSLprogram_.prototype.getUniformLocation = function (uniformName) {
     if (this.uniformLocation.hasOwnProperty(uniformName)) {
         return this.uniformLocation[uniformName];
     }
 };
 
-GLSLprogram.prototype.compileShader = function (shaderText, shaderType) {
+GLSLprogram_.prototype.compileShader = function (shaderText, shaderType) {
     var shader = this.gl.createShader(shaderType);
     if (!shader) {
         console.log('невозможно создать шейдер');
@@ -32,7 +32,7 @@ GLSLprogram.prototype.compileShader = function (shaderText, shaderType) {
     this.gl.attachShader(this.handle, shader);
 };
 
-GLSLprogram.prototype.link = function () {
+GLSLprogram_.prototype.link = function () {
     this.gl.linkProgram(this.handle);
     var linkStatus = this.gl.getProgramParameter(this.handle, this.gl.LINK_STATUS);
     if (!linkStatus) {
@@ -46,7 +46,7 @@ GLSLprogram.prototype.link = function () {
     return this.handle;
 };
 
-var GLSLProgram2 = {
+var GLSLProgram = {
     init: function (gl) {
         this.gl = gl;
         this.handle = this.gl.createProgram();
@@ -84,6 +84,6 @@ var GLSLProgram2 = {
 
 };
 
-// var program = new GLSLprogram();
+// var program = new GLSLprogram_();
 // program.uniformLocation.hello = "world";
 // console.log(program.getUniformLocation("hello"));
