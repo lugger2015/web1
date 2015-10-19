@@ -22,7 +22,7 @@ function main() {
     program.compileShader(shaderSources.vShaderSource, gl.VERTEX_SHADER);
     program.compileShader(shaderSources.fShaderSource, gl.FRAGMENT_SHADER);
     program.link();
-    var a_Position = gl.getAttribLocation(program.handle, 'a_Position');
+    var a_Position = gl.getAttribLocation(program._handle, 'a_Position');
 
     if (a_Position < 0) {
         console.log('невозможно получить a_Position');
@@ -30,8 +30,9 @@ function main() {
     }
 
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.useProgram(program.handle);
+    gl.useProgram(program._handle);
     program.setUniform4f('u_FragColor', 1.0, 0.0, 0.0, 1.0);
+    program.setUniform4f('u_Translation', 0.2, 0.0, 0.0, 0.0);
     var vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     var vertices = new Float32Array([0.0, 0.5, -0.5, -0.5, 0.5, -0, 5]);
