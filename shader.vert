@@ -1,6 +1,6 @@
 attribute vec4 a_Position;
-uniform vec4 u_Translation;
+uniform mat4 u_Translation;
 
 void main() { 
-	gl_Position = a_Position + u_Translation;
+	gl_Position = u_Translation*a_Position;
 }

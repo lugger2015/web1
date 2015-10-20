@@ -32,7 +32,9 @@ function main() {
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.useProgram(program._handle);
     program.setUniform4f('u_FragColor', 1.0, 0.0, 0.0, 1.0);
-    program.setUniform4f('u_Translation', 0.2, 0.0, 0.0, 0.0);
+    var mat = Object.create(Matrix4).init();
+    mat.setTranslateMatrix(-0.5,-0.5,0);
+    program.setUniformMatrix4('u_Translation', mat);
     var vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     var vertices = new Float32Array([0.0, 0.5, -0.5, -0.5, 0.5, -0, 5]);

@@ -46,5 +46,18 @@ var GLSLProgram = {
             this._uniformLocation[uniformName] = u_location;
             this._gl.uniform4f(u_location,x,y,z,w);
         }
+    },
+    setUniformMatrix4: function (uniformName,matrix4) {
+        if (this._uniformLocation.hasOwnProperty(uniformName)) {
+            this._gl.uniformMatrix4fv(this._uniformLocation[uniformName],false,matrix4.a);
+        } else {
+            var u_location = this._gl.getUniformLocation(this._handle, uniformName);
+            if (!u_location) {
+                console.log('невозможно получить uniform с именем '+ uniformName);
+                return null;
+            }
+            this._uniformLocation[uniformName] = u_location;
+            this._gl.uniformMatrix4fv(u_location,false,matrix4.a);
+        }
     }
 };
